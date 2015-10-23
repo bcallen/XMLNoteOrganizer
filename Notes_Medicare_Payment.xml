@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NOTES id="MCR_PMT">
+	<NOTE>
+		<TOPIC id="Medicare Payment">Medicare OP Psych Payment</TOPIC>
+		<BODY></BODY>
+		<T_TAGS>Main</T_TAGS>
+		<C_TAGS>Main</C_TAGS>
+		<DATE>10/20/2015</DATE>
+	</NOTE>
+	<NOTE>
+		<TOPIC id="OPPsych">Medicare OP Psych Payment</TOPIC>
+		<BODY>Medicare Outpatient Psych is paid by APC, but the total daily payment (for composite psych APC 0034) is limited to the partial hospitalization per diem.</BODY>
+		<XREF refid="MCR_PMT_PHP"/>
+		<SRC_NOTE>Bottom of page 234</SRC_NOTE>
+		<SRC_LINK>https://www.cms.gov/Medicare/Medicare-Fee-for-Service-Payment/HospitalOutpatientPPS/downloads/CMS-1404-FC.pdf</SRC_LINK>
+		<T_TAGS>Medicare Payment,OPPS</T_TAGS>
+		<C_TAGS>Neighborhood</C_TAGS>
+		<DATE>10/20/2015</DATE>
+	</NOTE>
+	<NOTE>
+		<TOPIC id="IPPsych">Medicare IP Psych Payment</TOPIC>
+		<BODY>Medicare Inpatient Psych is paid by MS-DRG, but not through IPPS.  Includes additional adjustments.</BODY>
+		<XREF refid="MCR_PMT_IPF_PPS"/>
+		<SRC_LINK>https://www.cms.gov/Outreach-and-Education/Medicare-Learning-Network-MLN/MLNProducts/downloads/InpatientPsychFac.pdf</SRC_LINK>
+		<T_TAGS>Medicare Payment,IPPS,IPF_PPS</T_TAGS>
+		<C_TAGS>Neighborhood</C_TAGS>
+		<DATE>10/20/2015</DATE>
+	</NOTE>
+	<NOTE>
+		<TOPIC id="PHP">Medicare 2014 Partial Hospitalization Per Diem</TOPIC>
+		<BODY>For community mental health centers, the final CY 2014 geometric mean per diem cost for Level I (three services) is $99 and for Level II (four or more services), $112.  For hospital-based PHPs, the final CY 2014 geometric mean per diem cost is $191 for Level I and $214 for Level II</BODY>
+		<SRC_LINK>https://www.cms.gov/Newsroom/MediaReleaseDatabase/Fact-sheets/2013-Fact-sheets-items/2013-11-27-3.html</SRC_LINK>
+		<T_TAGS>Medicare Payment,Partial Hospitalization (PHP)</T_TAGS>
+		<C_TAGS>Neighborhood</C_TAGS>
+		<DATE>10/20/2015</DATE>
+	</NOTE>
+</NOTES>
