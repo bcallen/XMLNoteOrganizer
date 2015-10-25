@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+	<VERSION>v0.1</VERSION>
+	<ACTIVEPATH>C:\Users\allen_000\Documents\XMLNotesTool\Notes_Medicare_Payment.xml</ACTIVEPATH>
+	<HOTKEYS>
+		<KEYBIND id="topic" key="q">Enter topic</KEYBIND>
+		<KEYBIND id="id" key="w">Enter ID</KEYBIND>
+		<KEYBIND id="body" key="a">Enter note</KEYBIND>
+		<KEYBIND id="srcLink" key="e">Enter link to source material</KEYBIND>
+		<KEYBIND id="srcNote" key="s">Enter note describing source</KEYBIND>
+		<KEYBIND id="cTags" key="d">Enter client tags</KEYBIND>
+		<KEYBIND id="tTags" key="f">Enter topic tags</KEYBIND>
+		<KEYBIND id="sTags" key="g">Enter study tags</KEYBIND>
+		<KEYBIND id="quit" key="z">Quit</KEYBIND>
+		<KEYBIND id="clear" key="x">Clear</KEYBIND>
+		<KEYBIND id="save" key="space">Save</KEYBIND>
+	</HOTKEYS>
+</CONFIG>
