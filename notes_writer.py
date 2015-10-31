@@ -7,8 +7,13 @@ import xml.dom.minidom as minidom
 import re
 
 CONFIG_REL_PATH = 'ConfigXMLNotes.xml'
- 
 
+
+class Text(tk.Text):
+    def set(self, val):
+        self.delete("1.0",'end')
+        self.insert(tk.END,val)
+ 
 class NotesWriter(tk.Frame):
         def __init__(self, master=None):
                 #Setup UI Tk Frame
@@ -20,12 +25,16 @@ class NotesWriter(tk.Frame):
                 #Initialize Input Variable Bindings
                 self.topic = tk.StringVar()
                 self.id = tk.StringVar()
-                self.body = tk.StringVar()
+                self.parentId = tk.StringVar()
+                self.bodyText = Text(self)
                 self.srcNote = tk.StringVar()
                 self.srcLink = tk.StringVar()
                 self.tTags = tk.StringVar()
                 self.cTags = tk.StringVar()
                 self.sTags = tk.StringVar()
+                self.entries = [self.topic, self.id, self.bodyText,
+                            self.srcNote, self.srcLink, self.tTags,
+                            self.cTags, self.sTags]
 
                 #Empty dict to store key to widget bindings
                 self.wigKeyBindings = {}          #key string to widget object reference
@@ -34,7 +43,10 @@ class NotesWriter(tk.Frame):
 
                 self.readconfig()
                 self.writer = XMLNoteWriter(self.path)
+                self.currentIDList = self.writer.getAllIDs()
                 self.createWidgets()
+
+
 
 
         def readconfig(self):
@@ -56,17 +68,30 @@ class NotesWriter(tk.Frame):
         def execute(self, event):
                 self.wigKeyBindings[event.keysym].invoke()
 
+        def updateFieldsToParent(self, *args):
+                note = self.writer.readNote(self.parentId.get())
+                self.updateFields(note)
+
+        def updateFields(self, loaded_inputs): 
+                for i in range(0, len(self.entries)-1):
+                        self.entries[i].set(loaded_inputs[i])
+
         def createWidgets(self):
-                
+                #TO DO:  move width, row, type, etc layout info into the configuration file.
                 self.topicEntry = ttk.Entry(self, width = 35, textvariable = self.topic)
-                self.topicEntry.grid(column = 1, row = 2, columnspan = 3, sticky=(W,E))
+                self.topicEntry.grid(column = 1, row = 2, columnspan = 1, sticky=(W,E))
                 self.labelAndBind('topic', self.topicEntry, self.activate).grid(column = 1, row=1, sticky=W)
 
                 self.idEntry = ttk.Entry(self, width = 35, textvariable = self.id)
-                self.idEntry.grid(column = 5, row = 2, sticky=(W,E))
-                self.labelAndBind("id", self.idEntry, self.activate).grid(column=5, row=1, sticky=W)
+                self.idEntry.grid(column = 3, row = 2, sticky=(W,E))
+                self.labelAndBind("id", self.idEntry, self.activate).grid(column=3, row=1, sticky=W)
 
-                self.bodyText = tk.Text(self)
+                self.idParentEntry = tk.OptionMenu(self, self.parentId, *self.currentIDList)
+                self.idParentEntry.grid(column = 5, row = 2, sticky=(W,E))
+                self.labelAndBind("idParent", self.idParentEntry, self.activate).grid(column=5, row=1, sticky=W)
+                self.parentId.trace("w",self.updateFieldsToParent)
+
+                #self.bodyText = Text(self)  => declared in init
                 self.bodyText.grid(column = 1, row = 4, columnspan = 5, sticky=(N,W,E,S))
                 self.labelAndBind("body",self.bodyText, self.activate).grid(column=1, row=3, sticky=W)
                 
@@ -104,7 +129,6 @@ class NotesWriter(tk.Frame):
 
                 for child in self.winfo_children(): child.grid_configure(padx=5, pady=5)
 
-        
         def labelAndBind(self, ident, widget, funct):
                 key = self.bindIdent(ident, widget, funct)
                 label = ttk.Label(self, text='{0} <Alt + {1}>'.format(self.uiEntryDescriptions[ident], key))
@@ -120,14 +144,6 @@ class NotesWriter(tk.Frame):
                 return self.version
 
         def save(self):
-                #print(self.topic.get())
-                #print(self.id.get())
-                #print(self.bodyText.get("1.0",'end-1c'))
-                #print(self.srcNote.get())
-                #print(self.srcLink.get())
-                #print(self.tTags.get())
-                #print(self.cTags.get())
-                #print(self.sTags.get())
                 self.writer.writeNote(self.topic.get(), self.id.get(), self.bodyText.get("1.0",'end-1c'),
                     self.srcNote.get(), self.srcLink.get(), self.tTags.get(),
                     self.cTags.get(), self.sTags.get())
@@ -137,17 +153,10 @@ class NotesWriter(tk.Frame):
                 import sys; sys.exit() 
 
         def clear(self):
-                self.topic = ""
-                self.id = ""
-                self.bodyText.delete("1.0",'end')
-                self.srcNote = ""
-                self.srcLink = ""
-                self.tTags = ""
-                self.cTags = ""
-                self.sTags = ""
+                self.updateFields(["" for item in range(len(self.entries))])
 
 class XMLNoteWriter:
-        def __init__(self, path = None):
+        def __init__(self, path = None, parent = None):
                 self.tree = ET.ElementTree()
                 if path != None:
                         self.path = path
@@ -155,6 +164,9 @@ class XMLNoteWriter:
                         self.noteParent = self.tree.getroot()
                 else:
                         self.noteParent = self.tree.Element("NOTES")
+                self.root = self.tree.getroot()
+                if not parent is None:
+                        self.noteParent.find()
 
         
         def writeNote(self, sTopic,sId,sBody,sSrcNote,sSrcLink,sTTags,sCTags,sSTags):
@@ -175,7 +187,36 @@ class XMLNoteWriter:
                 elem.text = sSTags
                 elem = ET.SubElement(note, 'DATE')
                 elem.text = datetime.today().strftime('%m/%d/%Y')
+
+        def readNote(self, root):
+                #TODO improve this [hardcoded range; repetition]
+                self.noteParent = self.root.find(".//NOTE[@id='{0}']".format(root))
+                if self.noteParent is not None:
+                        self.id = root
+                        self.topic = self.noteParent.find('TOPIC').text
+                        self.body = self.__validateTextVar(self.noteParent.find('BODY').text)
+                        self.srcNote = self.noteParent.find('SRC_NOTE').text
+                        self.srcLink = self.noteParent.find('SRC_LINK').text
+                        self.tTags = self.noteParent.find('T_TAGS').text
+                        self.cTags = self.noteParent.find('C_TAGS').text
+                        self.sTags = self.noteParent.find('S_TAGS').text
+                        self.date = self.noteParent.find('DATE').text
+                        return [self.topic, root, self.body, self.srcNote, self.srcLink, self.tTags, self.cTags, self.sTags, self.date]
+                else:
+                        return ["" for i in range(9)]
+        
+
+
+        def getAllIDs(self, root=None):
+                if root is None: 
+                    root = self.root
+                ids = []
+                for note in root.findall(".//NOTE"):
+                        ids.append(note.get("id"))
+                return ids
                 
+        def getAllChildIDs(self):
+                pass
                 
         def saveNote(self):
                 rough_xml = ET.tostring(self.noteParent, 'utf-8')
@@ -183,6 +224,11 @@ class XMLNoteWriter:
                 reparsed_xml = re.sub(r'\n[ |\t|\n]*\n',r'\n',reparsed_xml)  #remove blank rows
                 with open(self.path, "w") as text_file:
                         print(reparsed_xml, file=text_file)
+
+        def __validateTextVar(self, text):
+                if text is None:
+                    text = ''
+                return text
 
 root = tk.Tk()
 
