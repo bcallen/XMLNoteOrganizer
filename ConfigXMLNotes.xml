@@ -6,14 +6,15 @@
 		<KEYBIND id="topic" key="q">Enter topic</KEYBIND>
 		<KEYBIND id="id" key="w">Enter ID</KEYBIND>
 		<KEYBIND id="idParent" key="e">Select Parent ID</KEYBIND>
-		<KEYBIND id="body" key="1">Enter note</KEYBIND>
-		<KEYBIND id="srcLink" key="r">Enter link to source material</KEYBIND>
-		<KEYBIND id="srcNote" key="f">Enter note describing source</KEYBIND>
+		<KEYBIND id="body" key="r">Enter note</KEYBIND>
+		<KEYBIND id="srcLink" key="f">Enter link to source material</KEYBIND>
+		<KEYBIND id="srcNote" key="v">Enter note describing source</KEYBIND>
 		<KEYBIND id="cTags" key="a">Enter client tags</KEYBIND>
 		<KEYBIND id="tTags" key="s">Enter topic tags</KEYBIND>
 		<KEYBIND id="sTags" key="d">Enter study tags</KEYBIND>
 		<KEYBIND id="quit" key="z">Quit</KEYBIND>
 		<KEYBIND id="clear" key="x">Clear</KEYBIND>
 		<KEYBIND id="save" key="space">Save</KEYBIND>
+		<KEYBIND id="overwriteInd" key="t">Toggle</KEYBIND>
 	</HOTKEYS>
 </CONFIG>

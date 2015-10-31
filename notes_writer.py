@@ -13,6 +13,10 @@ class Text(tk.Text):
     def set(self, val):
         self.delete("1.0",'end')
         self.insert(tk.END,val)
+
+    #override get to always get all text.
+    def get(self):
+        return super(Text, self).get("1.0",'end-1c')
  
 class NotesWriter(tk.Frame):
         def __init__(self, master=None):
@@ -25,13 +29,14 @@ class NotesWriter(tk.Frame):
                 #Initialize Input Variable Bindings
                 self.topic = tk.StringVar()
                 self.id = tk.StringVar()
-                self.parentId = tk.StringVar()
+                self.idParent = tk.StringVar()
                 self.bodyText = Text(self)
                 self.srcNote = tk.StringVar()
                 self.srcLink = tk.StringVar()
                 self.tTags = tk.StringVar()
                 self.cTags = tk.StringVar()
                 self.sTags = tk.StringVar()
+                self.overwriteInd = tk.IntVar()
                 self.entries = [self.topic, self.id, self.bodyText,
                             self.srcNote, self.srcLink, self.tTags,
                             self.cTags, self.sTags]
@@ -46,9 +51,6 @@ class NotesWriter(tk.Frame):
                 self.currentIDList = self.writer.getAllIDs()
                 self.createWidgets()
 
-
-
-
         def readconfig(self):
                 self.configTree = ET.ElementTree()
                 self.configTree.parse(CONFIG_REL_PATH)
@@ -61,15 +63,28 @@ class NotesWriter(tk.Frame):
                         self.uiEntryDescriptions[entry.get('id')] = entry.text
                         self.uiHotKeys[entry.get('id')] = entry.get('key')
 
-
         def activate(self, event):
                 self.wigKeyBindings[event.keysym].focus()
 
         def execute(self, event):
                 self.wigKeyBindings[event.keysym].invoke()
 
+        def toggle(self, event):
+                self.wigKeyBindings[event.keysym].toggle()
+
+
+        def refreshOptionMenu(self, startEntry):
+                # Delete old options
+                self.idParentEntry['menu'].delete(0, 'end')
+
+                # Insert list of new options (tk._setit hooks them up to var)
+                self.currentIDList = self.writer.getAllIDs()
+                for choice in self.currentIDList:
+                    self.idParentEntry['menu'].add_command(label=choice, command=tk._setit(self.idParent, choice))
+                self.idParent.set(startEntry)
+
         def updateFieldsToParent(self, *args):
-                note = self.writer.readNote(self.parentId.get())
+                note = self.writer.readNote(self.idParent.get())
                 self.updateFields(note)
 
         def updateFields(self, loaded_inputs): 
@@ -86,10 +101,14 @@ class NotesWriter(tk.Frame):
                 self.idEntry.grid(column = 3, row = 2, sticky=(W,E))
                 self.labelAndBind("id", self.idEntry, self.activate).grid(column=3, row=1, sticky=W)
 
-                self.idParentEntry = tk.OptionMenu(self, self.parentId, *self.currentIDList)
+                self.idParentEntry = tk.OptionMenu(self, self.idParent, *self.currentIDList)
                 self.idParentEntry.grid(column = 5, row = 2, sticky=(W,E))
                 self.labelAndBind("idParent", self.idParentEntry, self.activate).grid(column=5, row=1, sticky=W)
-                self.parentId.trace("w",self.updateFieldsToParent)
+                self.idParent.trace("w",self.updateFieldsToParent)
+
+                self.overwriteIndChkbx = tk.Checkbutton(self, text="Overwrite Note <Alt + {0}>".format(self.uiHotKeys['overwriteInd']), variable=self.overwriteInd)
+                self.overwriteIndChkbx.grid(column = 5, row = 3, sticky=(W,E))
+                self.bindIdent('overwriteInd', self.overwriteIndChkbx, self.toggle)
 
                 #self.bodyText = Text(self)  => declared in init
                 self.bodyText.grid(column = 1, row = 4, columnspan = 5, sticky=(N,W,E,S))
@@ -144,10 +163,10 @@ class NotesWriter(tk.Frame):
                 return self.version
 
         def save(self):
-                self.writer.writeNote(self.topic.get(), self.id.get(), self.bodyText.get("1.0",'end-1c'),
-                    self.srcNote.get(), self.srcLink.get(), self.tTags.get(),
-                    self.cTags.get(), self.sTags.get())
+                toSave = [entry.get() for entry in self.entries]
+                self.writer.writeNote(self.overwriteInd.get(), *toSave)
                 self.writer.saveNote()
+                self.refreshOptionMenu(self.id.get())
 
         def quit(self):
                 import sys; sys.exit() 
@@ -168,25 +187,27 @@ class XMLNoteWriter:
                 if not parent is None:
                         self.noteParent.find()
 
-        
-        def writeNote(self, sTopic,sId,sBody,sSrcNote,sSrcLink,sTTags,sCTags,sSTags):
+        def __setNote(self, iOverwrite, noteImmParent, noteTag, noteText):
+                if iOverwrite == 0:
+                        elem = ET.SubElement(noteImmParent, noteTag)
+                else:
+                        elem = noteImmParent.find(noteTag)
+                elem.text = noteText
+
+        def writeNote(self, iOverwrite, sTopic,sId,sBody,sSrcNote,sSrcLink,sTTags,sCTags,sSTags):
                 #TODO after simple prototype, restructure to take generic dictionary of tags, values, attributes.  should be able to recycle some of this for updating config file.
-                note = ET.SubElement(self.noteParent, 'NOTE') 
-                note.set('id',sId)
-                elem = ET.SubElement(note, 'TOPIC')
-                elem.text = sTopic
-                elem = ET.SubElement(note, 'BODY')
-                elem.text = sBody
-                #elem = ET.SubElement(note, 'XREF')
-                #elem.text = sXRef
-                elem = ET.SubElement(note, 'T_TAGS')
-                elem.text = sTTags
-                elem = ET.SubElement(note, 'C_TAGS')
-                elem.text = sCTags
-                elem = ET.SubElement(note, 'S_TAGS')
-                elem.text = sSTags
-                elem = ET.SubElement(note, 'DATE')
-                elem.text = datetime.today().strftime('%m/%d/%Y')
+                if iOverwrite == 0:
+                    self.noteParent = ET.SubElement(self.noteParent, 'NOTE') 
+                self.noteParent.set('id',sId)
+                self.__setNote(iOverwrite, self.noteParent, 'TOPIC', sTopic)
+                self.__setNote(iOverwrite, self.noteParent, 'BODY', sBody)
+                self.__setNote(iOverwrite, self.noteParent, 'SRC_NOTE', sSrcNote)
+                self.__setNote(iOverwrite, self.noteParent, 'SRC_LINK', sSrcLink)
+                self.__setNote(iOverwrite, self.noteParent, 'T_TAGS', sTTags)
+                self.__setNote(iOverwrite, self.noteParent, 'C_TAGS', sCTags)
+                self.__setNote(iOverwrite, self.noteParent, 'S_TAGS', sSTags)
+                self.__setNote(iOverwrite, self.noteParent, 'DATE', datetime.today().strftime('%m/%d/%Y'))
+
 
         def readNote(self, root):
                 #TODO improve this [hardcoded range; repetition]
@@ -204,8 +225,6 @@ class XMLNoteWriter:
                         return [self.topic, root, self.body, self.srcNote, self.srcLink, self.tTags, self.cTags, self.sTags, self.date]
                 else:
                         return ["" for i in range(9)]
-        
-
 
         def getAllIDs(self, root=None):
                 if root is None: 
@@ -219,7 +238,7 @@ class XMLNoteWriter:
                 pass
                 
         def saveNote(self):
-                rough_xml = ET.tostring(self.noteParent, 'utf-8')
+                rough_xml = ET.tostring(self.root, 'utf-8')
                 reparsed_xml = minidom.parseString(rough_xml).toprettyxml(indent="\t")
                 reparsed_xml = re.sub(r'\n[ |\t|\n]*\n',r'\n',reparsed_xml)  #remove blank rows
                 with open(self.path, "w") as text_file:
