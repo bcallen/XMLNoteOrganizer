@@ -1,12 +1,16 @@
 Note writer TODO:
-Add switch to choose between editing selected parent or creating new child under selected parent
-2.Use . delimiter create ID based on this hierarchy.  E.g. MCR.PMT.OP.Psych.PHP
+1. Support starting from a new XML file rather than existing file. Maybe start with stub read from Config file?
+2. Add ability to visualize notes tree.
 3.Add validation to check ID uniqueness
-4.Add ability to open up parent/sibling/child notes for editing.  Maybe also enter existing ID to open existing note.
+4.Add ability to open up parent/sibling/child notes for editing.  
 5. When quit hotkey is used, program exits as expected but throws errors.  Clean up.
 6. Make UI a little nicer - improve colors.
 7. Pull widget settings out of code into config file
 8. Add error message for invalid text in inputs (e.g. text looking like XML)
 
+Add ability to delete current note with option to save children.
+Add ability to move notes around in structure.
 
-Support starting from a new XML file rather than existing file
+
+NEXT UP -
+	> use new XMLNoteWriter get variations to add ability to limit elements in dropdown
