@@ -98,6 +98,21 @@ class NotesWriter(tk.Frame):
         for i in range(0, len(self.entries)-1):
             self.entries[i].set(loaded_inputs[i])
 
+    def upOne(self,*args):
+        """Shifts active tree position up one level to parent node"""
+        if self.idParent.get() is None:
+            return
+        pId = self.writer.getParentID(self.idParent.get())
+        self.idParent.set(pId)
+        self.writer.setNoteParent(pId)
+
+    def deleteCurrentNote(self, *args):
+        pId = self.writer.getParentID(self.idParent.get())
+        self.writer.deleteActiveNote()
+        self.idParent.set(pId)
+        self.writer.setNoteParent(pId)
+        self.save()
+
     def createWidgets(self):
         #TO DO:  move width, row, type, etc layout info
         # into the configuration file.
@@ -183,6 +198,10 @@ class NotesWriter(tk.Frame):
         self.quitButton.grid(column = 1, row=11, sticky=(W))
         self.bindIdent('quit', self.quitButton, self.execute)
 
+        ttk.Label(self, text='Up one Alt + <  Delete Current Note Alt + /').grid(column=3, row=3)
+        self.bind_all('<Alt-,>',self.upOne)
+        self.bind_all('<Alt-/>',self.deleteCurrentNote)
+
         for child in self.winfo_children(): 
             child.grid_configure(padx=5, pady=5)
 
@@ -238,6 +257,23 @@ class XMLNoteWriter:
     def __refreshParentMap(self):
         self.parent_map = {c:p for p in self.tree.iter() for c in p}
 
+    def __refreshNoteIds(self):
+        for c in self.root.iter("NOTE"):
+            print(c.get('id'))
+            cId = re.sub(r'.*\.','',c.get('id'))
+            parentID = ''
+            if c in self.parent_map:
+                parentID = self.parent_map[c].get('id')
+            cId = '.'.join([parentID,cId])
+            c.set('id',cId)
+
+    def setNoteParent(self, rootId):
+        root = self.idLookup(rootId)
+        if root is not None:
+            self.noteParent = root
+        else:
+            self.noteParent = self.root
+
     def idLookup(self, rootId):
         return self.root.find(".//NOTE[@id='{0}']".format(rootId))
 
@@ -259,6 +295,7 @@ class XMLNoteWriter:
         self.__setNote(iOverwrite, self.noteParent, 'S_TAGS', sSTags)
         self.__setNote(iOverwrite, self.noteParent, 'DATE', 
                         datetime.today().strftime('%m/%d/%Y'))
+
 
 
     def readNote(self, rootId):
@@ -307,9 +344,17 @@ class XMLNoteWriter:
             return None
         parent = self.parent_map[root]
         return self.getAllChildIDs(parent)
-        
+
+    def getParentID(self, rootId):
+        """Get parent element of root."""
+        root = self.idLookup(rootId)
+        if rootId is None:
+            return None
+        return self.parent_map[root].get('id')
+
     def saveNote(self):
-        """Write entire tree to XML file with clean formatting"""
+        """Write entire tree to XML file with scrubbed formatting"""
+        self.__refreshNoteIds()
         rough_xml = ET.tostring(self.root, 'utf-8')
         reparsed_xml = minidom.parseString(rough_xml).toprettyxml(indent="\t")
         #remove blank rows
@@ -317,6 +362,16 @@ class XMLNoteWriter:
         with open(self.path, "w") as text_file:
             print(reparsed_xml, file=text_file)
         self.__refreshParentMap()
+        self.__refreshNoteIds()
+
+    def deleteActiveNote(self):
+        if self.noteParent == self.root:
+            return
+        child = self.noteParent
+        parent = self.parent_map[self.noteParent]
+        for gc in child.findall('NOTE'):
+            parent.append(gc)
+        parent.remove(child)
 
     def __validateTextVar(self, text):
         if text is None:

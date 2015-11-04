@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <NOTES id="MCR">
-	<NOTE id="Medicare Payment">
+	<NOTE id="MCR.Medicare Payment">
 		<TOPIC>Medicare OP Psych Payment</TOPIC>
 		<BODY/>
 		<SRC_NOTE/>
@@ -10,7 +10,7 @@
 		<S_TAGS/>
 		<DATE>10/20/2015</DATE>
 	</NOTE>
-	<NOTE id="OPPsych">
+	<NOTE id="MCR.OPPsych">
 		<TOPIC>Medicare OP Psych Payment</TOPIC>
 		<BODY>Medicare Outpatient Psych is paid by APC, but the total daily payment (for composite psych APC 0034) is limited to the partial hospitalization per diem.</BODY>
 		<SRC_NOTE>Bottom of page 234</SRC_NOTE>
@@ -20,7 +20,7 @@
 		<S_TAGS/>
 		<DATE>10/20/2015</DATE>
 	</NOTE>
-	<NOTE id="IPPsych">
+	<NOTE id="MCR.IPPsych">
 		<TOPIC>Medicare IP Psych Payment</TOPIC>
 		<BODY>Medicare Inpatient Psych is paid by MS-DRG, but not through IPPS.  Includes additional adjustments.</BODY>
 		<XREF refid="MCR_PMT_IPF_PPS"/>
@@ -31,7 +31,7 @@
 		<S_TAGS/>
 		<DATE>10/20/2015</DATE>
 	</NOTE>
-	<NOTE id="PHP">
+	<NOTE id="MCR.PHP">
 		<TOPIC>Medicare 2014 Partial Hospitalization Per Diem</TOPIC>
 		<BODY>For community mental health centers, the final CY 2014 geometric mean per diem cost for Level I (three services) is $99 and for Level II (four or more services), $112.  For hospital-based PHPs, the final CY 2014 geometric mean per diem cost is $191 for Level I and $214 for Level II</BODY>
 		<SRC_NOTE/>
@@ -41,7 +41,7 @@
 		<S_TAGS/>
 		<DATE>10/20/2015</DATE>
 	</NOTE>
-	<NOTE id="PriceFormula">
+	<NOTE id="MCR.PriceFormula">
 		<TOPIC>Fundamental Pricing Formula</TOPIC>
 		<BODY>The fundamental pricing formula is:
 $$0 = V_0 = \sum_{t=0}^\infty B_t d_t v^t - \pi_t \Delta_t v^t$$
@@ -53,7 +53,7 @@ $$0 = V_0 = \sum_{t=0}^\infty B_t d_t v^t - \pi_t \Delta_t v^t$$
 		<S_TAGS>FAP;Module6</S_TAGS>
 		<DATE>11/01/2015</DATE>
 	</NOTE>
-	<NOTE id="Modules">
+	<NOTE id="MCR.Modules">
 		<TOPIC>SOA Modules</TOPIC>
 		<BODY>SOA Modules 
 Fundamentals of actuarial practice: focusing on the actuarial control cycle and basic pricing, reserving and funding models </BODY>
@@ -63,7 +63,7 @@ Fundamentals of actuarial practice: focusing on the actuarial control cycle and 
 		<C_TAGS/>
 		<S_TAGS>Modules;FAP</S_TAGS>
 		<DATE>11/01/2015</DATE>
-		<NOTE id="Module 6">
+		<NOTE id="MCR.Modules.Module 6">
 			<TOPIC>FAP</TOPIC>
 			<BODY>Focus is on model selection and designing actuarial solutions</BODY>
 			<SRC_NOTE/>
@@ -73,7 +73,7 @@ Fundamentals of actuarial practice: focusing on the actuarial control cycle and 
 			<S_TAGS>Modules;FAP</S_TAGS>
 			<DATE>11/01/2015</DATE>
 		</NOTE>
-		<NOTE id="CaseStudy">
+		<NOTE id="MCR.Modules.CaseStudy">
 			<TOPIC>Case studies</TOPIC>
 			<BODY>Case studies included in the FAP modules</BODY>
 			<SRC_NOTE/>
@@ -82,7 +82,7 @@ Fundamentals of actuarial practice: focusing on the actuarial control cycle and 
 			<C_TAGS/>
 			<S_TAGS>Modules;FAP</S_TAGS>
 			<DATE>11/01/2015</DATE>
-			<NOTE id="TermLife">
+			<NOTE id="MCR.Modules.CaseStudy.TermLife">
 				<TOPIC>Term Life Case Study</TOPIC>
 				<BODY>Improving a generic term life policy to increase profitability.</BODY>
 				<SRC_NOTE/>
@@ -91,7 +91,7 @@ Fundamentals of actuarial practice: focusing on the actuarial control cycle and 
 				<C_TAGS/>
 				<S_TAGS>Modules;FAP;Life</S_TAGS>
 				<DATE>11/01/2015</DATE>
-				<NOTE id="TermLifeComm">
+				<NOTE id="MCR.Modules.CaseStudy.TermLife.TermLifeComm">
 					<TOPIC>Commissions as a lever for increasing profit</TOPIC>
 					<BODY> - Raising commissions can be an effective way to increase sales volume for products that are not selling as well as expected when pricing and design seems competitive.
  - For modeling, balance profits, expenses and commissions using scenario testing.  If commissions are increased, more is paid out but fixed expenses are spread over more policies and the product may be more profitable.
@@ -103,7 +103,7 @@ Fundamentals of actuarial practice: focusing on the actuarial control cycle and 
 					<S_TAGS>Modules;FAP;Life</S_TAGS>
 					<DATE>11/01/2015</DATE>
 				</NOTE>
-				<NOTE id="CostPlusLimit">
+				<NOTE id="MCR.Modules.CaseStudy.TermLife.CostPlusLimit">
 					<TOPIC>Macro Pricing and issues with Cost Plus</TOPIC>
 					<BODY>Three issues with typical pricing models:
 	-Done on a per unit basis.
@@ -121,7 +121,7 @@ Limitations:
 					<C_TAGS/>
 					<S_TAGS>Modules;FAP;Life</S_TAGS>
 					<DATE>11/01/2015</DATE>
-					<NOTE id="TraditionalPricingProblem">
+					<NOTE id="MCR.Modules.CaseStudy.TermLife.CostPlusLimit.TraditionalPricingProblem">
 						<TOPIC>Traditional Pricing Algorithm problems</TOPIC>
 						<BODY>Because Cost+ pricing does not give the information needed to get to optimal price, there is frequently an impass in pricing where two parties disagree on price. 
 (Often pricing actuaries pushing for a higher price while marketing pushes for a lower price.)
@@ -133,8 +133,26 @@ This does not lead to optimal pricing.</BODY>
 						<C_TAGS/>
 						<S_TAGS>Modules;FAP;Life</S_TAGS>
 						<DATE>11/01/2015</DATE>
+						<NOTE id="MCR.Modules.CaseStudy.TermLife.CostPlusLimit.TraditionalPricingProblem.TraditionalPricingProblem">
+							<TOPIC>Traditional Pricing Algorithm problems</TOPIC>
+							<BODY>Allocating overhead costs results in loss of information about how profitable an additional unit sold really is.  This is because fixed and marginal costs are bundled.
+Because Cost+ pricing does not give the information needed to get to optimal price, there is frequently an impass in pricing where two parties disagree on price. 
+(Often pricing actuaries pushing for a higher price while marketing pushes for a lower price.)
+&quot;In practice, the looping process seems to end only when one (or more) of the following conditions is met, none of which is conducive to optimal decision-making: 
+1. Time constraints dictate that the looping process must end. 
+2. Actuaries become more aggressive with pricing assumptions and as such are able to show greater unit profit at a lower price. 
+3. Either side compromises through fatigue. 
+4. Either side triumphs through use of political power within the organization.&quot;
+This does not lead to optimal pricing.</BODY>
+							<SRC_NOTE>Paper covering macro pricing and limits</SRC_NOTE>
+							<SRC_LINK>https://drive.google.com/open?id=0BwefV1KFTCDHejI0ejMtVW5ab1E</SRC_LINK>
+							<T_TAGS>Actuarial;Theory;Case Studies;Commission</T_TAGS>
+							<C_TAGS>None</C_TAGS>
+							<S_TAGS/>
+							<DATE>11/03/2015</DATE>
+						</NOTE>
 					</NOTE>
-					<NOTE id="MacroPricingOverview">
+					<NOTE id="MCR.Modules.CaseStudy.TermLife.CostPlusLimit.MacroPricingOverview">
 						<TOPIC>Macro Pricing</TOPIC>
 						<BODY>Improvements in macro pricing: &quot;
 1. Rather than analyzing profits on a unit basis, financial measurements must focus on the entire project or venture. In new product development, for example, the profit analysis considers the entire block of business likely to be sold. 
@@ -147,7 +165,7 @@ Optimal decision elements are chosen _disregarding_  fixed non-marginal costs th
 						<C_TAGS/>
 						<S_TAGS>Modules;FAP;Life</S_TAGS>
 						<DATE>11/01/2015</DATE>
-						<NOTE id="MacroPricingAssumptions">
+						<NOTE id="MCR.Modules.CaseStudy.TermLife.CostPlusLimit.MacroPricingOverview.MacroPricingAssumptions">
 							<TOPIC>Macro Pricing</TOPIC>
 							<BODY>Macro pricing is performed on a &quot;Project&quot; basis, and requires some new assumptions.
 -Project &quot;Shelf life&quot;.  How long will the product be relevant/sold? In today's environment lifespans of more than 3-4 years are rare.
@@ -166,12 +184,34 @@ Three general steps then happen:
 							<S_TAGS>Modules;FAP;Life</S_TAGS>
 							<DATE>11/01/2015</DATE>
 						</NOTE>
+						<NOTE id="MCR.Modules.CaseStudy.TermLife.CostPlusLimit.MacroPricingOverview.ExistingBusiness">
+							<TOPIC>Macro Pricing Existing Business Update</TOPIC>
+							<BODY>Macro pricing demand curve selection for updating existing business:
+	1. Various alternative prices are selected for analysis.
+		- Business is assumed to be sold over the rpl product's expected life
+		- Developed for a range of possible production levels
+		- For each product x production level, E(future profits) is calc'd
+	2. Use a profit benchmark - analyze the existing product under the same methodology
+	   and added to the graph.
+		- Using this, develop the &quot;No action&quot; choice of the decision set by
+		  estimating future sales of existing product.
+	3. Construct a level surface, determining the production level necessary for profit equivalence to the No Action current product price.
+	4. Present this set of level options to production (marketing) and allow them to select
+	   the price, along with the linked production target.
+	</BODY>
+							<SRC_NOTE>Paper covering macro pricing and limits</SRC_NOTE>
+							<SRC_LINK>https://drive.google.com/open?id=0BwefV1KFTCDHejI0ejMtVW5ab1E</SRC_LINK>
+							<T_TAGS>Actuarial;Theory;Case Studies;Macro Pricing</T_TAGS>
+							<C_TAGS>None</C_TAGS>
+							<S_TAGS>SOA;FAP</S_TAGS>
+							<DATE>11/03/2015</DATE>
+						</NOTE>
 					</NOTE>
 				</NOTE>
 			</NOTE>
 		</NOTE>
 	</NOTE>
-	<NOTE id="OPPSExclusions">
+	<NOTE id="MCR.OPPSExclusionsB">
 		<TOPIC>Medicare OPPS Exclusions</TOPIC>
 		<BODY>Packaging is a critical feature of the OPPS, which is a Prospective Payment System. Within each APC, payment for dependent, ancillary, supportive, and adjunctive items and services is packaged into payment for the primary independent service. Separate payments are not made for packaged services, which are considered an integral part of another service that is paid under the OPPS. Some examples of usually packaged services are:  All supplies;  Ancillary services;  Anesthesia;  Operating and recovery room use;  Clinical diagnostic laboratory tests;  Procedures described by add-on codes;  Implantable medical devices (such as pacemakers);  Inexpensive drugs under a per-day drug threshold packaging amount;
 </BODY>
@@ -181,17 +221,6 @@ Three general steps then happen:
 		<C_TAGS>None</C_TAGS>
 		<S_TAGS/>
 		<DATE>11/02/2015</DATE>
-		<NOTE id="OPPSExclusionsB">
-			<TOPIC>Medicare OPPS Exclusions</TOPIC>
-			<BODY>Packaging is a critical feature of the OPPS, which is a Prospective Payment System. Within each APC, payment for dependent, ancillary, supportive, and adjunctive items and services is packaged into payment for the primary independent service. Separate payments are not made for packaged services, which are considered an integral part of another service that is paid under the OPPS. Some examples of usually packaged services are:  All supplies;  Ancillary services;  Anesthesia;  Operating and recovery room use;  Clinical diagnostic laboratory tests;  Procedures described by add-on codes;  Implantable medical devices (such as pacemakers);  Inexpensive drugs under a per-day drug threshold packaging amount;
-</BODY>
-			<SRC_NOTE>None</SRC_NOTE>
-			<SRC_LINK>None</SRC_LINK>
-			<T_TAGS>None</T_TAGS>
-			<C_TAGS>None</C_TAGS>
-			<S_TAGS/>
-			<DATE>11/02/2015</DATE>
-		</NOTE>
 	</NOTE>
 </NOTES>
 

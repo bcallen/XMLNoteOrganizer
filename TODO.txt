@@ -1,4 +1,5 @@
 Note writer TODO:
+!-Finish testing and debugging delete feature
 1. Support starting from a new XML file rather than existing file. Maybe start with stub read from Config file?
 2. Add ability to visualize notes tree.
 3.Add validation to check ID uniqueness
@@ -8,7 +9,7 @@ Note writer TODO:
 7. Pull widget settings out of code into config file
 8. Add error message for invalid text in inputs (e.g. text looking like XML)
 
-Add ability to delete current note with option to save children.
+//Add ability to delete current note with option to save children.
 Add ability to move notes around in structure.
 
 
